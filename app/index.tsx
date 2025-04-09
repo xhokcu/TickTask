@@ -11,10 +11,10 @@ export default function Index() {
     const checkOnboarding = async () => {
       try {
         const onboarded = await AsyncStorage.getItem('onboarded');
+        const isLoggedIn = await AsyncStorage.getItem('user');
         setIsUserOnboarded(onboarded === 'true');
 
-        const token = await AsyncStorage.getItem('token');
-        setIsAuthenticated(!!token);
+        setIsAuthenticated(!!isLoggedIn);
       } catch {}
 
       setIsLoading(false);
@@ -27,5 +27,5 @@ export default function Index() {
 
   if (!isUserOnboarded) return <Redirect href="/onboarding" />;
 
-  return isAuthenticated ? <Redirect href="/(drawer)" /> : <Redirect href="/(auth)/login" />;
+  return isAuthenticated ? <Redirect href="/(tabs)" /> : <Redirect href="/(auth)/login" />;
 }

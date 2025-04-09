@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
     flexDirection: flexDirection.row,
     gap: spacing[8],
     borderRadius: borderRadius[8],
-    width: 'auto',
     paddingHorizontal: spacing[24],
     alignItems: alignItems.center,
     justifyContent: 'center',
@@ -27,11 +26,12 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.semibold,
     fontSize: fontSizes.body.medium,
     fontWeight: fontWeights.semiBold,
+    lineHeight: spacing[24],
   },
 
   // **Filled Button**
   filledButton: {
-    backgroundColor: colorScheme.light.blue[900],
+    backgroundColor: colorScheme.light.blue[300],
   },
   filledButtonText: {
     color: colorScheme.light.white,
@@ -39,26 +39,36 @@ export const styles = StyleSheet.create({
 
   // **Outlined Button**
   outlinedButton: {
-    borderColor: colorScheme.light.blue[900],
+    borderColor: colorScheme.light.blue[300],
     borderWidth: 1,
   },
   outlinedButtonText: {
-    color: colorScheme.light.blue[900],
+    color: colorScheme.light.blue[300],
+  },
+
+  // **Error Button**
+  errorButton: {
+    borderColor: colorScheme.light.error,
+    borderWidth: 1,
+  },
+  errorButtonText: {
+    color: colorScheme.light.error,
   },
 
   // **Small Button**
   smallButton: {
     height: spacing[32],
+    paddingVertical: spacing[8],
   },
 
   // **Medium Button**
   mediumButton: {
-    height: spacing[44],
+    paddingVertical: spacing[12],
   },
 
   // **Large Button**
   largeButton: {
-    height: spacing[56],
+    paddingVertical: spacing[18],
   },
 
   // **Disabled Button**

@@ -1,33 +1,32 @@
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/hooks/useQuery';
+import Toast from 'react-native-toast-message';
 
 import {
-  Montserrat_100Thin,
-  Montserrat_200ExtraLight,
-  Montserrat_300Light,
-  Montserrat_400Regular,
-  Montserrat_500Medium,
-  Montserrat_600SemiBold,
-  Montserrat_700Bold,
-  Montserrat_800ExtraBold,
-  Montserrat_900Black,
-  Montserrat_100Thin_Italic,
-  Montserrat_200ExtraLight_Italic,
-  Montserrat_300Light_Italic,
-  Montserrat_400Regular_Italic,
-  Montserrat_500Medium_Italic,
-  Montserrat_600SemiBold_Italic,
-  Montserrat_700Bold_Italic,
-  Montserrat_800ExtraBold_Italic,
-  Montserrat_900Black_Italic,
-} from '@expo-google-fonts/montserrat';
+  Rubik_300Light,
+  Rubik_400Regular,
+  Rubik_500Medium,
+  Rubik_600SemiBold,
+  Rubik_700Bold,
+  Rubik_800ExtraBold,
+  Rubik_900Black,
+  Rubik_300Light_Italic,
+  Rubik_400Regular_Italic,
+  Rubik_500Medium_Italic,
+  Rubik_600SemiBold_Italic,
+  Rubik_700Bold_Italic,
+  Rubik_800ExtraBold_Italic,
+  Rubik_900Black_Italic,
+} from '@expo-google-fonts/rubik';
 import { useAppState } from '@/hooks/useAppState';
+import IconButton from '@/components/IconButton/IconButton.index';
+import { ArrowLeft } from '@/svg';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -36,7 +35,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(drawer)',
+  initialRouteName: '(tabs)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -46,24 +45,20 @@ export default function RootLayout() {
   useAppState();
 
   const [loaded, error] = useFonts({
-    Montserrat_100Thin,
-    Montserrat_200ExtraLight,
-    Montserrat_300Light,
-    Montserrat_400Regular,
-    Montserrat_500Medium,
-    Montserrat_600SemiBold,
-    Montserrat_700Bold,
-    Montserrat_800ExtraBold,
-    Montserrat_900Black,
-    Montserrat_100Thin_Italic,
-    Montserrat_200ExtraLight_Italic,
-    Montserrat_300Light_Italic,
-    Montserrat_400Regular_Italic,
-    Montserrat_500Medium_Italic,
-    Montserrat_600SemiBold_Italic,
-    Montserrat_700Bold_Italic,
-    Montserrat_800ExtraBold_Italic,
-    Montserrat_900Black_Italic,
+    Rubik_300Light,
+    Rubik_400Regular,
+    Rubik_500Medium,
+    Rubik_600SemiBold,
+    Rubik_700Bold,
+    Rubik_800ExtraBold,
+    Rubik_900Black,
+    Rubik_300Light_Italic,
+    Rubik_400Regular_Italic,
+    Rubik_500Medium_Italic,
+    Rubik_600SemiBold_Italic,
+    Rubik_700Bold_Italic,
+    Rubik_800ExtraBold_Italic,
+    Rubik_900Black_Italic,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -89,6 +84,7 @@ function RootLayoutNav() {
     <ThemeProvider value={DefaultTheme}>
       <QueryClientProvider client={queryClient}>
         <App />
+        <Toast />
       </QueryClientProvider>
     </ThemeProvider>
   );
@@ -99,7 +95,21 @@ function App() {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: true }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="edit_account"
+        options={{
+          title: 'Edit Account',
+          headerLeft: () => <IconButton icon={<ArrowLeft />} onPress={() => router.back()} />,
+        }}
+      />
+      <Stack.Screen
+        name="edit_information"
+        options={{
+          title: 'Edit Account',
+          headerLeft: () => <IconButton icon={<ArrowLeft />} onPress={() => router.back()} />,
+        }}
+      />
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
     </Stack>
