@@ -8,6 +8,7 @@ import Home from './Home';
 import Login from './Login';
 import Onboarding from './Onboarding';
 import Person from './Person';
+import TickTaskLogo from './TickTaskLogo';
 import ListAdd from './ListAdd';
 import Logout from './Logout';
 import Visibility from './Visibility';
@@ -24,6 +25,7 @@ export {
   Login,
   Onboarding,
   Person,
+  TickTaskLogo,
   ListAdd,
   Logout,
   Visibility,
