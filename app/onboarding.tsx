@@ -4,7 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { theme } from '@/theme/Theme';
 import Button from '@/components/Button/Button.index';
-import { Onboarding as OnboardingImage } from '@/svg/index';
+import { TickTaskLogo } from '@/svg/index';
+
+const { colorScheme, alignItems, spacing, fonts, fontSizes, justifyContent } = theme;
 
 export default function Onboarding() {
   const handleOnboarded = async (route: string) => {
@@ -20,7 +22,11 @@ export default function Onboarding() {
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <OnboardingImage />
+          <TickTaskLogo />
+          <Text style={styles.logoText}>
+            <Text style={[styles.logoText, { color: colorScheme.light.blue[300] }]}>tick</Text>
+            <Text style={[styles.logoText, { color: colorScheme.light.blue[200] }]}>task</Text>
+          </Text>
         </View>
         <View style={styles.bottomContainer}>
           <Text style={styles.heading}>Let's get started!</Text>
@@ -44,8 +50,6 @@ export default function Onboarding() {
   );
 }
 
-const { colorScheme, alignItems, spacing, fonts, fontSizes, justifyContent } = theme;
-
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -59,6 +63,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: alignItems.center,
+    justifyContent: justifyContent.center,
+    flexDirection: 'row',
+    gap: spacing[12],
+  },
+  logoText: {
+    fontFamily: fonts.semibold,
+    fontSize: fontSizes.heading.large,
   },
   bottomContainer: {
     gap: spacing[36],
