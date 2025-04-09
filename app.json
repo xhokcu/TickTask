@@ -27,7 +27,12 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router", "expo-localization", "expo-sqlite", "expo-font"],
+    "plugins": [
+      "expo-router",
+      "expo-localization",
+      "expo-sqlite",
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true
     },
@@ -36,7 +41,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "0ee3f2f8-670c-451b-a801-5481484456bf"
+        "projectId": "6e45986b-68f2-48d4-9825-700a0ca0429d"
       }
     },
     "owner": "helinnokcu"
