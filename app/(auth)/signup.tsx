@@ -51,6 +51,7 @@ export default function Signup() {
       await setDoc(doc(db, 'users', user.uid), {
         firstName,
         lastName,
+        displayName: `${data.firstName} ${data.lastName}`,
         email,
       });
       showToast();

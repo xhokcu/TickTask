@@ -21,7 +21,7 @@ export default function Home() {
     const getItemData = async () => {
       try {
         const data = await getItem('user');
-        return JSON.parse(data as string);
+        return data;
       } catch {}
     };
     const fetchData = async () => {

@@ -68,8 +68,7 @@ export default function Login() {
               firstName: documentData.firstName,
               lastName: documentData.lastName,
             };
-            const stringData = JSON.stringify(userData);
-            await setItem('user', stringData);
+            await setItem('user', userData);
             showToast();
             router.replace('/(tabs)');
           } else {

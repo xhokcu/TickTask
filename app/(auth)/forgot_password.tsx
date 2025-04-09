@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
-import {
-  useForgotPasswordSchema,
-  ForgotPasswordSchemaType,
-} from '@/helpers/validationSchemas/forgotPasswordSchema';
+import { usePasswordSchema, PasswordSchemaType } from '@/helpers/validationSchemas/passwordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 // Theme
 import { theme } from '@/theme/Theme';
@@ -24,8 +21,8 @@ export default function ForgotPassword() {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm<ForgotPasswordSchemaType>({
-    resolver: yupResolver(useForgotPasswordSchema()),
+  } = useForm<PasswordSchemaType>({
+    resolver: yupResolver(usePasswordSchema()),
     mode: 'onChange',
   });
 
@@ -38,7 +35,7 @@ export default function ForgotPassword() {
 
   const [errMessage, setErrMessage] = useState<string>('');
 
-  const onSubmit = async (data: ForgotPasswordSchemaType) => {
+  const onSubmit = async (data: PasswordSchemaType) => {
     const { email } = data;
     try {
       await sendPasswordResetEmail(auth, email).then((data) => {
