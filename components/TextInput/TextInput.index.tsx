@@ -17,6 +17,7 @@ export function CoreTextInput({
   isPassword = false,
   customContainerStyle,
   customInputStyle,
+  defaultValue,
 }: ICoreTextInput) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
@@ -32,6 +33,7 @@ export function CoreTextInput({
           style={styles.textInput}
           placeholder={placeholder}
           onChangeText={setValue}
+          defaultValue={defaultValue}
           value={value}
           placeholderTextColor={colorScheme.light.gray[900]}
           secureTextEntry={isPassword && !isPasswordVisible}

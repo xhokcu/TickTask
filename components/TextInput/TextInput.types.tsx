@@ -2,7 +2,7 @@ import { ViewStyle } from 'react-native';
 
 export interface ITextInput {
   control?: any;
-  placeholder: string;
+  placeholder?: string;
   label: string;
   value?: string;
   setValue?: (val: string) => void;
@@ -11,10 +11,11 @@ export interface ITextInput {
   isPassword?: boolean;
   customContainerStyle?: ViewStyle;
   customInputStyle?: ViewStyle;
+  defaultValue?: string;
 }
 
 export interface ICoreTextInput {
-  placeholder: string;
+  placeholder?: string;
   label: string;
   value?: string;
   setValue?: (val: string) => void;
@@ -22,4 +23,5 @@ export interface ICoreTextInput {
   isPassword?: boolean;
   customContainerStyle?: ViewStyle;
   customInputStyle?: ViewStyle;
+  defaultValue?: string;
 }

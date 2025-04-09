@@ -3,7 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '@/theme/Theme';
 import { Edit } from '@/svg';
 import IconButton from '@/components/IconButton/IconButton.index';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { getItem } from '@/helpers/asyncStorage/asyncStorage';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 const InformationItem = ({
   title,
@@ -26,15 +30,24 @@ const InformationItem = ({
 };
 
 export default function EditAccount() {
-  const { user: stringUser } = useLocalSearchParams();
-  const user = JSON.parse(stringUser as string);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      const getUser = async () => {
+        const storedUser = await getItem('user');
+        setCurrentUser(storedUser);
+      };
+
+      getUser();
+    }, []),
+  );
 
   const handleEdit = (screen: string) => {
     router.push({
       pathname: '/edit_information',
       params: {
         type: screen,
-        user: stringUser,
       },
     });
   };
@@ -43,12 +56,12 @@ export default function EditAccount() {
     <View style={styles.container}>
       <InformationItem
         title={'Name'}
-        value={user?.displayName as string}
+        value={currentUser?.displayName as string}
         onPress={() => handleEdit('name')}
       />
       <InformationItem
         title={'Email'}
-        value={user?.email as string}
+        value={currentUser?.email as string}
         onPress={() => handleEdit('email')}
       />
       <InformationItem

@@ -9,6 +9,8 @@ import { router } from 'expo-router';
 import { removeItem } from '@/helpers/asyncStorage/asyncStorage';
 import { auth } from '@/firebase';
 import { signOut } from 'firebase/auth';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 interface IUser {
   uid: string;
@@ -34,12 +36,22 @@ export default function Profile() {
     const fetchUser = async () => {
       try {
         const item = await getItem('user');
-        const parsedItem = JSON.parse(item as string);
-        setUser(parsedItem);
+        setUser(item);
       } catch {}
     };
     fetchUser();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const getUser = async () => {
+        const storedUser = await getItem('user');
+        setUser(storedUser);
+      };
+
+      getUser();
+    }, []),
+  );
 
   const handleLogout = async () => {
     await removeItem('user');
