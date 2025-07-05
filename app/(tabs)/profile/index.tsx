@@ -1,7 +1,5 @@
 /* eslint-disable import/no-unresolved */
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
-import { getItem } from '@/helpers/asyncStorage/asyncStorage';
-import { useEffect, useState } from 'react';
 import { theme } from '@/theme/Theme';
 import Button from '@/components/Button/Button.index';
 import { Delete, Logout } from '@/svg';
@@ -9,16 +7,9 @@ import { router } from 'expo-router';
 import { removeItem } from '@/helpers/asyncStorage/asyncStorage';
 import { auth } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
-
-interface IUser {
-  uid: string;
-  email: string;
-  displayName: string;
-  firstName: string;
-  lastName: string;
-}
+import { RootState, useAppDispatch } from '@/store';
+import { logoutUser } from '@/store/user/user.thunks';
+import { useSelector } from 'react-redux';
 
 function ProfileAvatar({ firstName, lastName }: { firstName: string; lastName: string }) {
   const initials = firstName?.charAt(0).toUpperCase() + lastName?.charAt(0).toUpperCase();
@@ -30,39 +21,21 @@ function ProfileAvatar({ firstName, lastName }: { firstName: string; lastName: s
 }
 
 export default function Profile() {
-  const [user, setUser] = useState<IUser | null>(null);
+  const userData = useSelector((state: RootState) => state.user.user);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const item = await getItem('user');
-        setUser(item);
-      } catch {}
-    };
-    fetchUser();
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      const getUser = async () => {
-        const storedUser = await getItem('user');
-        setUser(storedUser);
-      };
-
-      getUser();
-    }, []),
-  );
+  const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
     await removeItem('user');
     await signOut(auth);
+    dispatch(logoutUser());
     router.replace('/(auth)/login');
   };
 
   const handleEdit = () => {
     router.push({
-      pathname: '/edit_account',
-      params: { user: JSON.stringify(user) },
+      pathname: '/profile/edit_account',
+      params: { user: JSON.stringify(userData), title: 'Edit Name' },
     });
   };
 
@@ -72,10 +45,13 @@ export default function Profile() {
         <TouchableOpacity onPress={handleEdit}>
           <View style={styles.avatarContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.nameText}>{user?.displayName}</Text>
-              <Text style={styles.emailText}>{user?.email}</Text>
+              <Text style={styles.nameText}>{userData?.displayName}</Text>
+              <Text style={styles.emailText}>{userData?.email}</Text>
             </View>
-            <ProfileAvatar firstName={user?.firstName || ''} lastName={user?.lastName || ''} />
+            <ProfileAvatar
+              firstName={userData.firstName as string}
+              lastName={userData.lastName as string}
+            />
           </View>
         </TouchableOpacity>
         <View style={styles.itemContainer}>

@@ -14,7 +14,7 @@ import { Login as LoginImage } from '@/svg';
 // Firebase
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/firebase';
-import Toast from 'react-native-toast-message';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 export default function ForgotPassword() {
   const {
@@ -27,9 +27,9 @@ export default function ForgotPassword() {
   });
 
   const showToast = () => {
-    Toast.show({
+    ToastAlert({
       type: 'success',
-      text1: 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.',
+      title: 'Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.',
     });
   };
 

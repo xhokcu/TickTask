@@ -11,44 +11,35 @@ import { theme } from '@/theme/Theme';
 // Libraries
 import moment from 'moment';
 // Async Storage
-import { getItem } from '@/helpers/asyncStorage/asyncStorage';
+import { useUserUid } from '@/hooks/useUserId';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
+import { TaskItem } from '@/components/TaskItem/TaskItem.index';
 
 export default function Home() {
-  const [user, setUser] = useState<any>('');
   const [taskList, setTaskList] = useState<any>([]);
 
-  useEffect(() => {
-    const getItemData = async () => {
-      try {
-        const data = await getItem('user');
-        return data;
-      } catch {}
-    };
-    const fetchData = async () => {
-      const data = await getItemData();
-      setUser(data);
-    };
-    fetchData();
-  }, []);
+  const userData = useSelector((state: RootState) => state.user.user);
+  const id = useUserUid();
 
   useEffect(() => {
     const getDoc = async () => {
       try {
-        const queryRef = query(collection(db, 'users', user.uid, 'tasks'));
+        const queryRef = query(collection(db, 'users', id as string, 'tasks'));
         const data = await getDocs(queryRef);
         const taskList = data.docs.map((doc) => doc.data());
         setTaskList(taskList);
       } catch {}
     };
     getDoc();
-  }, [user]);
+  }, [id]);
 
   const today = moment().format('DD MMMM, YYYY');
 
   return (
     <SafeAreaView style={styles.safeView}>
       <View style={styles.container}>
-        <Text style={styles.heading}>Hi, {user?.firstName}!</Text>
+        <Text style={styles.heading}>Hi, {userData?.firstName}!</Text>
         <View style={styles.progressCardContainer}>
           <View>
             <Text style={styles.dateText}>{today}</Text>
@@ -61,7 +52,8 @@ export default function Home() {
             estimatedItemSize={20}
             data={taskList}
             extraData={taskList}
-            renderItem={({ item }: { item: any }) => <Text>{item.title}</Text>}
+            renderItem={({ item }) => <TaskItem item={item} />}
+            ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
           />
         </View>
       </View>

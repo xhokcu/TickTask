@@ -1,27 +1,23 @@
 import { StyleSheet } from 'react-native';
 import { theme } from '@/theme/Theme';
 
-const { fonts, fontSizes, spacing, colorScheme, lineHeight, justifyContent } = theme;
+const { fonts, fontSizes, spacing, colorScheme } = theme;
 
 export const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colorScheme.light.background,
-  },
   container: {
     flex: 1,
-    paddingHorizontal: spacing[24],
-    paddingTop: spacing[24],
-    paddingBottom: spacing[48],
-    justifyContent: justifyContent.spaceBetween,
+    padding: spacing[24],
   },
-  contentContainer: {
+  formContainer: {
+    flex: 1,
+  },
+  inputContainer: {
+    flex: 1,
     gap: spacing[24],
   },
   descriptionText: {
     fontFamily: fonts.regular,
     fontSize: fontSizes.body.large,
-    lineHeight: lineHeight[21],
     color: colorScheme.light.gray[600],
   },
 });

@@ -51,6 +51,7 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
+    color: colorScheme.light.gray[900],
   },
   errorInput: {
     borderColor: colorScheme.light.error,
@@ -59,5 +60,9 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: fontSizes.body.small,
     color: colorScheme.light.error,
+  },
+  focusedContainer: {
+    borderColor: colorScheme.light.blue[500],
+    borderWidth: borderWidth[1],
   },
 });

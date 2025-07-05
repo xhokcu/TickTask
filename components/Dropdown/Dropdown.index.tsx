@@ -1,5 +1,5 @@
-import { Text, TextInput as TextInputRN, TouchableOpacity, View } from 'react-native';
-import { ICoreTextInput } from './Dropdown.types';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { IDropdownMenuProps, IDropdownItemProps, IDropdownProps } from './Dropdown.types';
 import { styles } from './Dropdown.styles';
 import { theme } from '@/theme/Theme';
 import { useState } from 'react';
@@ -7,35 +7,24 @@ import { ArrowDown } from '@/svg';
 
 const { colorScheme } = theme;
 
-const priorities = [
-  {
-    id: 1,
-    title: 'High',
-  },
-  {
-    id: 2,
-    title: 'Medium',
-  },
-  {
-    id: 3,
-    title: 'Low',
-  },
-];
-
-const DropdownItem = ({ item }: any) => {
+const DropdownItem = ({ item, onSelect }: IDropdownItemProps) => {
   const { title } = item;
   return (
-    <TouchableOpacity style={styles.dropdownItem}>
+    <TouchableOpacity style={styles.dropdownItem} onPress={onSelect}>
       <Text>{title}</Text>
     </TouchableOpacity>
   );
 };
 
-const DropdownMenu = () => {
+const DropdownMenu = ({ data, onSelect }: IDropdownMenuProps) => {
   return (
     <View style={styles.dropdowMenu}>
-      {priorities.map((item) => (
-        <DropdownItem item={item} />
+      {data?.map((item, index) => (
+        <DropdownItem
+          key={`${index}_${item.id}_${item.title}_`}
+          item={item}
+          onSelect={() => onSelect(item.id)}
+        />
       ))}
     </View>
   );
@@ -49,34 +38,43 @@ export default function Dropdown({
   errorMessage,
   customContainerStyle,
   customInputStyle,
-}: ICoreTextInput) {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  data,
+}: IDropdownProps) {
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const handleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsFocused(!isFocused);
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={[styles.inputContainer, customContainerStyle]}
-        onPress={handleMenu}
-      >
+      <View style={[styles.inputContainer, customContainerStyle]}>
         {label && <Text style={styles.labelText}>{label}</Text>}
-        <View style={[styles.input, errorMessage && styles.errorInput, customInputStyle]}>
-          <TextInputRN
-            style={styles.textInput}
-            placeholder={placeholder}
-            onChangeText={setValue}
-            value={value}
-            placeholderTextColor={colorScheme.light.gray[900]}
-            editable={false}
-          />
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={handleMenu}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={[
+            styles.input,
+            errorMessage && styles.errorInput,
+            customInputStyle,
+            isFocused && styles.focusedContainer,
+          ]}
+        >
+          <Text style={styles.textInput}>{value ? value : placeholder}</Text>
           <ArrowDown color={colorScheme.light.gray[500]} />
-        </View>
-      </TouchableOpacity>
-      {isMenuOpen && <DropdownMenu />}
+        </TouchableOpacity>
+      </View>
+      {isFocused && (
+        <DropdownMenu
+          data={data}
+          onSelect={(id: number) => {
+            setValue(id);
+            setIsFocused(false);
+          }}
+        />
+      )}
     </View>
   );
 }
