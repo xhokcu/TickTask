@@ -1,13 +1,10 @@
-/* eslint-disable import/no-unresolved */
 import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '@/theme/Theme';
 import { Edit } from '@/svg';
 import IconButton from '@/components/IconButton/IconButton.index';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { getItem } from '@/helpers/asyncStorage/asyncStorage';
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
+import { RootState } from '@/store';
+import { useSelector } from 'react-redux';
 
 const InformationItem = ({
   title,
@@ -30,25 +27,12 @@ const InformationItem = ({
 };
 
 export default function EditAccount() {
-  const [currentUser, setCurrentUser] = useState<any>(null);
-
-  useFocusEffect(
-    useCallback(() => {
-      const getUser = async () => {
-        const storedUser = await getItem('user');
-        setCurrentUser(storedUser);
-      };
-
-      getUser();
-    }, []),
-  );
-
+  const userData = useSelector((state: RootState) => state.user.user);
   const handleEdit = (screen: string) => {
+    const title = screen.charAt(0).toUpperCase() + screen.slice(1);
     router.push({
-      pathname: '/edit_information',
-      params: {
-        type: screen,
-      },
+      pathname: '/profile/edit_information',
+      params: { title: `Edit ${title}`, type: screen },
     });
   };
 
@@ -56,12 +40,12 @@ export default function EditAccount() {
     <View style={styles.container}>
       <InformationItem
         title={'Name'}
-        value={currentUser?.displayName as string}
+        value={userData.displayName as string}
         onPress={() => handleEdit('name')}
       />
       <InformationItem
         title={'Email'}
-        value={currentUser?.email as string}
+        value={userData.email as string}
         onPress={() => handleEdit('email')}
       />
       <InformationItem

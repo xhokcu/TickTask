@@ -1,5 +1,6 @@
 import ArrowDown from './ArrowDown';
 import ArrowLeft from './ArrowLeft';
+import Cancel from './Cancel';
 import CheckCircle from './CheckCircle';
 import CloseCircle from './CloseCircle';
 import Delete from './Delete';
@@ -17,6 +18,7 @@ import VisibilityOff from './VisibilityOff';
 export {
   ArrowDown,
   ArrowLeft,
+  Cancel,
   CheckCircle,
   CloseCircle,
   Delete,

@@ -15,7 +15,8 @@
     },
     "ios": {
       "bundleIdentifier": "com.ticktask.ticktask",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon": "./assets/icon.png"
     },
     "android": {
       "package": "com.ticktask.ticktask",

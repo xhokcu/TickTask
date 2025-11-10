@@ -1,15 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { theme } from '@/theme/Theme';
 
-const { fonts, fontSizes, spacing, colorScheme, lineHeight, justifyContent } = theme;
+const { fonts, fontSizes, spacing, colorScheme, lineHeight } = theme;
 
 export const styles = StyleSheet.create({
-  container: {
+  formContainer: {
     flex: 1,
     padding: spacing[24],
-    justifyContent: justifyContent.spaceBetween,
   },
-  contentContainer: {
+  inputContainer: {
     flex: 1,
     gap: spacing[24],
   },

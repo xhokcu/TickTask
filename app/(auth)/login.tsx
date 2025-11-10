@@ -17,8 +17,7 @@ import { theme } from '@/theme/Theme';
 // Components
 import Button from '@/components/Button/Button.index';
 import TextInput from '@/components/TextInput/TextInput.index';
-import Toast from 'react-native-toast-message';
-// Assetss
+// Assets
 import { Login as LoginImage } from '@/svg';
 // Firebase
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -26,7 +25,9 @@ import { auth } from '@/firebase';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/firebase';
 // Async Storage
-import { setItem } from '@/helpers/asyncStorage/asyncStorage';
+import { useAppDispatch } from '@/store';
+import { loginUser } from '@/store/user/user.thunks';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 export default function Login() {
   const {
@@ -38,12 +39,14 @@ export default function Login() {
     mode: 'onChange',
   });
 
+  const dispatch = useAppDispatch();
+
   const [errMessage, setErrMessage] = useState<string>('');
 
   const showToast = () => {
-    Toast.show({
+    ToastAlert({
       type: 'success',
-      text1: 'You logged in successfully!',
+      title: 'You logged in successfully!',
     });
   };
 
@@ -68,7 +71,7 @@ export default function Login() {
               firstName: documentData.firstName,
               lastName: documentData.lastName,
             };
-            await setItem('user', userData);
+            dispatch(loginUser(userData));
             showToast();
             router.replace('/(tabs)');
           } else {
