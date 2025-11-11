@@ -14,8 +14,8 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
-          cache: 'false'
+          node-version: 20.x
+          cache: yarn
 
       - name: 🏗 Setup Expo
         uses: expo/expo-github-action@v7
@@ -25,7 +25,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: 🐛 Debug EXPO_TOKEN
         run: if [ -z "$EXPO_TOKEN" ]; then echo "EXPO_TOKEN is not set"; else echo "EXPO_TOKEN is set"; fi
