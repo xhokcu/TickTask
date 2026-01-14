@@ -23,6 +23,7 @@ export const theme = {
     spaceAround: 'space-around' as ViewStyle['justifyContent'],
   },
   colorScheme: {
+    backgroundModal: '#1B1B1B99',
     light: {
       blue: {
         50: '#E8EAF1',
@@ -117,6 +118,13 @@ export const theme = {
           400: '#1F87AD',
           500: '#164564',
         },
+        grey: {
+          100: '#F0F2F3',
+          200: '#DFE4E6',
+          300: '#98A7AE',
+          400: '#89969D',
+          500: '#7A868B',
+        },
       },
       background: '#F5F7FB',
       success: '#10B981',
@@ -190,6 +198,9 @@ export const theme = {
     60: 60,
     80: 80,
     120: 120,
+    200: 200,
+    400: 400,
+    500: 500,
   },
   borderRadius: {
     0: 0,
@@ -281,7 +292,6 @@ export const theme = {
     dropdown: {
       shadowColor: '#071A6E1A',
       shadowOffset: { width: 0, height: 0 },
-
       shadowOpacity: 1,
       shadowRadius: 8,
       elevation: 10,

@@ -19,13 +19,21 @@
     "ios": {
       "bundleIdentifier": "com.ticktask.ticktask",
       "supportsTablet": true,
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon.png",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCj8Fq-ndpG4FEyv4JVq4DEvccn9ReEleM"
+      }
     },
     "android": {
       "package": "com.ticktask.ticktask",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCs_PU_ywyWxFGDLAo0BfR4W7sFjjKr9UQ"
+        }
       }
     },
     "web": {

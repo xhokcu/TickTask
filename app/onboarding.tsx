@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { theme } from '@/theme/Theme';

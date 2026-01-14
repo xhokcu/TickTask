@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Login as LoginImage } from '@/svg';
 import Button from '@/components/Button/Button.index';
 import { theme } from '@/theme/Theme';

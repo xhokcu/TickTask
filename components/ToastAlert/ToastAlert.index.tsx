@@ -6,7 +6,7 @@ export const ToastAlert = ({
   title,
   description,
   position = 'top',
-  visibilityTime,
+  visibilityTime = 3000,
 }: IToastMessageProps) => {
   return Toast.show({
     type,

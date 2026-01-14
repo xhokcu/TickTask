@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/hooks/useQuery';
 import Toast from 'react-native-toast-message';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import toastConfig from '@/toastConfig';
 
 import {
@@ -83,12 +84,14 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <Provider store={store}>
-      <ThemeProvider value={DefaultTheme}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-          <Toast />
-        </QueryClientProvider>
-      </ThemeProvider>
+      <SafeAreaProvider>
+        <ThemeProvider value={DefaultTheme}>
+          <QueryClientProvider client={queryClient}>
+            <App />
+            <Toast />
+          </QueryClientProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
     </Provider>
   );
 }

@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useLoginSchema, LoginSchemaType } from '@/helpers/validationSchemas/loginSchema';
@@ -27,7 +20,6 @@ import { db } from '@/firebase';
 // Async Storage
 import { useAppDispatch } from '@/store';
 import { loginUser } from '@/store/user/user.thunks';
-import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 export default function Login() {
   const {
@@ -43,12 +35,12 @@ export default function Login() {
 
   const [errMessage, setErrMessage] = useState<string>('');
 
-  const showToast = () => {
-    ToastAlert({
-      type: 'success',
-      title: 'You logged in successfully!',
-    });
-  };
+  // const showToast = () => {
+  //   ToastAlert({
+  //     type: 'success',
+  //     title: 'You logged in successfully!',
+  //   });
+  // };
 
   const getUserById = async (uid: string) => {
     try {
@@ -72,7 +64,7 @@ export default function Login() {
               lastName: documentData.lastName,
             };
             dispatch(loginUser(userData));
-            showToast();
+            // showToast();
             router.replace('/(tabs)');
           } else {
             setErrMessage('User data not found.');
