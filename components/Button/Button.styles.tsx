@@ -57,7 +57,6 @@ export const styles = StyleSheet.create({
 
   // **Small Button**
   smallButton: {
-    height: spacing[32],
     paddingVertical: spacing[8],
   },
 

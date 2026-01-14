@@ -7,7 +7,7 @@ import { Cancel } from '@/svg';
 
 export default function CustomToast({ text1, text2, icon }: ICustomToastProps) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="box-none">
       <View style={styles.iconTextContainer}>
         {icon}
         <View style={styles.textContainer}>

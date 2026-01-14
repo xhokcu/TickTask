@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { usePasswordSchema, PasswordSchemaType } from '@/helpers/validationSchemas/passwordSchema';

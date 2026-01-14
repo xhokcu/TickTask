@@ -1,9 +1,10 @@
 // React
-import { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // Firebase
 import { db } from '@/firebase';
-import { collection, query, getDocs } from 'firebase/firestore';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 // Components
 import { FlashList } from '@shopify/flash-list';
 // Theme
@@ -13,28 +14,50 @@ import moment from 'moment';
 // Async Storage
 import { useUserUid } from '@/hooks/useUserId';
 import { RootState } from '@/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TaskItem } from '@/components/TaskItem/TaskItem.index';
+import { setTasks } from '@/store/task/taskSlice';
+import { deleteTask } from '@/store/task/taskSlice';
 
 export default function Home() {
-  const [taskList, setTaskList] = useState<any>([]);
-
+  const dispatch = useDispatch();
+  const tasks = useSelector((state: RootState) => state.task.tasks);
   const userData = useSelector((state: RootState) => state.user.user);
   const id = useUserUid();
 
   useEffect(() => {
-    const getDoc = async () => {
-      try {
-        const queryRef = query(collection(db, 'users', id as string, 'tasks'));
-        const data = await getDocs(queryRef);
-        const taskList = data.docs.map((doc) => doc.data());
-        setTaskList(taskList);
-      } catch {}
+    const fetchTasks = async () => {
+      if (!id) return;
+      const tasksRef = collection(db, 'users', id, 'tasks');
+      const snapshot = await getDocs(tasksRef);
+      const data = snapshot.docs.map((doc) => {
+        const docData = doc.data();
+        return {
+          id: doc.id,
+          title: docData.title ?? '',
+          priority: docData.priority ?? '',
+          createdAt: docData.createdAt ?? '',
+          ...docData,
+        };
+      });
+      dispatch(setTasks(data));
     };
-    getDoc();
-  }, [id]);
+
+    fetchTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData, dispatch]);
 
   const today = moment().format('DD MMMM, YYYY');
+
+  const handleTaskDelete = async (taskId: string) => {
+    if (!id) return;
+    try {
+      dispatch(deleteTask(taskId));
+      await deleteDoc(doc(db, 'users', id, 'tasks', taskId));
+    } catch {
+      // console.error('Error deleting task:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeView}>
@@ -49,10 +72,12 @@ export default function Home() {
         </View>
         <View style={styles.listContainer}>
           <FlashList
-            estimatedItemSize={20}
-            data={taskList}
-            extraData={taskList}
-            renderItem={({ item }) => <TaskItem item={item} />}
+            keyExtractor={(item) => item.id}
+            data={tasks}
+            extraData={tasks}
+            renderItem={({ item }) => (
+              <TaskItem item={item} handleDelete={() => handleTaskDelete(item.id)} />
+            )}
             ItemSeparatorComponent={() => <View style={{ height: 20 }}></View>}
           />
         </View>
