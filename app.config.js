@@ -1,0 +1,58 @@
+module.exports = {
+  expo: {
+    name: 'TickTask',
+    slug: 'ticktask',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/images/icon.png',
+    scheme: 'myapp',
+    userInterfaceStyle: 'light',
+    newArchEnabled: true,
+    runtimeVersion: {
+      policy: 'sdkVersion',
+    },
+    splash: {
+      image: './assets/images/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff',
+    },
+    ios: {
+      bundleIdentifier: 'com.ticktask.ticktask',
+      supportsTablet: true,
+      icon: './assets/icon.png',
+      config: {
+        googleMapsApiKey: process.env.EXPO_PUBLIC_IOS_MAPS_API_KEY,
+      },
+    },
+    android: {
+      package: 'com.ticktask.ticktask',
+      adaptiveIcon: {
+        foregroundImage: './assets/images/adaptive-icon.png',
+        backgroundColor: '#ffffff',
+      },
+      config: {
+        googleMaps: {
+          apiKey: process.env.EXPO_PUBLIC_ANDROID_MAPS_API_KEY,
+        },
+      },
+    },
+    web: {
+      bundler: 'metro',
+      output: 'static',
+      favicon: './assets/images/favicon.png',
+    },
+    plugins: ['expo-router', 'expo-localization', 'expo-sqlite', 'expo-font', 'expo-web-browser'],
+    experiments: {
+      typedRoutes: true,
+    },
+    extra: {
+      router: {
+        origin: false,
+      },
+      eas: {
+        projectId: '6e45986b-68f2-48d4-9825-700a0ca0429d',
+      },
+    },
+    owner: 'helinnokcu',
+  },
+};

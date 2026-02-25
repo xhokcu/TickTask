@@ -28,6 +28,15 @@ This project is set up with a [GitHub template repository](https://github.com/it
    yarn install
    ```
 
+4. Set up environment variables:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Fill in the values in `.env` with your own Firebase and Google Maps API credentials.
+   See `.env.example` for the list of required variables.
+
 ### 🚀 Start the App
 
 To start the app in different environments, use one of the following commands:
