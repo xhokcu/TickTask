@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '@/theme/Theme';
+import { Text, View } from 'react-native';
+
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/TextInput/TextInput.index';
 import Button from '@/components/Button/Button.index';
@@ -9,11 +9,12 @@ import { updateEmail, reauthenticateWithCredential, EmailAuthProvider } from 'fi
 import { auth, db } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { setItem, getItem } from '@/helpers/asyncStorage/asyncStorage';
-import Toast from 'react-native-toast-message';
 import { useState } from 'react';
+import { styles } from './EditEmail.styles';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 const EditEmail = ({ user }: { user: any }) => {
-  const userEmail = 'H@h2.com'; // Eğer user null ya da undefined ise boş bir string döner
+  const userEmail = 'Helin@h.com'; // Eğer user null ya da undefined ise boş bir string döner
   const uid = user?.uid || ''; // Aynı şekilde uid için de kontrol
 
   const [isPasswordVerified, setIsPasswordVerified] = useState(false);
@@ -38,14 +39,14 @@ const EditEmail = ({ user }: { user: any }) => {
         throw new Error('No authenticated user found.');
       }
       setIsPasswordVerified(true);
-      Toast.show({
+      ToastAlert({
         type: 'success',
-        text1: 'Password verified successfully!',
+        title: 'Password verified successfully!',
       });
     } catch {
-      Toast.show({
+      ToastAlert({
         type: 'error',
-        text1: 'Incorrect password!',
+        title: 'Incorrect password!',
       });
     }
   };
@@ -83,76 +84,60 @@ const EditEmail = ({ user }: { user: any }) => {
       await setItem('user', updatedUser);
       // console.log('async update');
 
-      Toast.show({
+      ToastAlert({
         type: 'success',
-        text1: 'Your email has been updated successfully!',
+        title: 'Your email has been updated successfully!',
       });
     } catch {
-      Toast.show({
+      ToastAlert({
         type: 'error',
-        text1: 'Failed to update email!',
+        title: 'Failed to update email!',
       });
     }
   };
-
-  return (
-    <View style={styles.container}>
-      {!isPasswordVerified ? (
-        <View style={styles.passwordContainer}>
-          <Text style={styles.descriptionText}>
-            To change your email, please enter your password.
-          </Text>
-          <TextInput label="Password" value={password} setValue={setPassword} isPassword />
-          <Button
-            title="Verify Password"
-            size="medium"
-            type="filled"
-            onPress={handleVerifyPassword}
-            disabled={!password}
-          />
-        </View>
-      ) : (
-        <View style={styles.emailContainer}>
-          <Text style={styles.descriptionText}>Now, enter your new email address.</Text>
-          <TextInput
-            label="New Email"
-            control={control}
-            name="email"
-            placeholder="New Email"
-            defaultValue={userEmail}
-          />
-          <Button
-            title="Save"
-            size="medium"
-            type="filled"
-            onPress={handleSubmit(handleSaveEmail)}
-            disabled={!isValid}
-          />
-        </View>
-      )}
+  const renderPassword = () => (
+    <View style={styles.formContainer}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.descriptionText}>
+          To change your email, please enter your password.
+        </Text>
+        <TextInput label="Password" value={password} setValue={setPassword} isPassword />
+      </View>
+      <Button
+        title="Verify Password"
+        size="medium"
+        type="filled"
+        onPress={handleVerifyPassword}
+        disabled={!password}
+      />
     </View>
   );
+
+  const renderEmail = () => (
+    <View style={styles.formContainer}>
+      <View style={styles.inputContainer}>
+        <Text style={styles.descriptionText}>Now, enter your new email address.</Text>
+        <TextInput
+          label="New Email"
+          control={control}
+          name="email"
+          placeholder="New Email"
+          defaultValue={userEmail}
+        />
+      </View>
+      <Button
+        title="Save"
+        size="medium"
+        type="filled"
+        onPress={handleSubmit(handleSaveEmail)}
+        disabled={!isValid}
+      />
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>{!isPasswordVerified ? renderPassword() : renderEmail()}</View>
+  );
 };
-
-const { fonts, fontSizes, spacing, colorScheme } = theme;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: spacing[24],
-    backgroundColor: colorScheme.light.background,
-  },
-  passwordContainer: {
-    gap: spacing[24],
-  },
-  emailContainer: {
-    gap: spacing[24],
-  },
-  descriptionText: {
-    fontFamily: fonts.regular,
-    fontSize: fontSizes.body.large,
-    color: colorScheme.light.gray[600],
-  },
-});
 
 export default EditEmail;

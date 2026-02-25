@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { useLoginSchema, LoginSchemaType } from '@/helpers/validationSchemas/loginSchema';
@@ -17,8 +10,7 @@ import { theme } from '@/theme/Theme';
 // Components
 import Button from '@/components/Button/Button.index';
 import TextInput from '@/components/TextInput/TextInput.index';
-import Toast from 'react-native-toast-message';
-// Assetss
+// Assets
 import { Login as LoginImage } from '@/svg';
 // Firebase
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -26,7 +18,8 @@ import { auth } from '@/firebase';
 import { getDoc, doc } from 'firebase/firestore';
 import { db } from '@/firebase';
 // Async Storage
-import { setItem } from '@/helpers/asyncStorage/asyncStorage';
+import { useAppDispatch } from '@/store';
+import { loginUser } from '@/store/user/user.thunks';
 
 export default function Login() {
   const {
@@ -38,14 +31,16 @@ export default function Login() {
     mode: 'onChange',
   });
 
+  const dispatch = useAppDispatch();
+
   const [errMessage, setErrMessage] = useState<string>('');
 
-  const showToast = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'You logged in successfully!',
-    });
-  };
+  // const showToast = () => {
+  //   ToastAlert({
+  //     type: 'success',
+  //     title: 'You logged in successfully!',
+  //   });
+  // };
 
   const getUserById = async (uid: string) => {
     try {
@@ -68,8 +63,8 @@ export default function Login() {
               firstName: documentData.firstName,
               lastName: documentData.lastName,
             };
-            await setItem('user', userData);
-            showToast();
+            dispatch(loginUser(userData));
+            // showToast();
             router.replace('/(tabs)');
           } else {
             setErrMessage('User data not found.');

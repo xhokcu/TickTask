@@ -1,69 +1,93 @@
 /* eslint-disable import/no-unresolved */
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
-import { getItem } from '@/helpers/asyncStorage/asyncStorage';
-import { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, Text, View, Alert } from 'react-native';
 import { theme } from '@/theme/Theme';
 import Button from '@/components/Button/Button.index';
 import { Delete, Logout } from '@/svg';
 import { router } from 'expo-router';
+import { doc, deleteDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { removeItem } from '@/helpers/asyncStorage/asyncStorage';
-import { auth } from '@/firebase';
-import { signOut } from 'firebase/auth';
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
-
-interface IUser {
-  uid: string;
-  email: string;
-  displayName: string;
-  firstName: string;
-  lastName: string;
-}
+import { auth, db } from '@/firebase';
+import { deleteUser, signOut } from 'firebase/auth';
+import { RootState, useAppDispatch } from '@/store';
+import { logoutUser } from '@/store/user/user.thunks';
+import { useSelector } from 'react-redux';
+import { reauthenticate } from '@/helpers/firestore/reauthenticate';
+import DeleteAccountModal from '@/components/DeleteAccountModal/DeleteAccountModal.index';
+import { useState } from 'react';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 function ProfileAvatar({ firstName, lastName }: { firstName: string; lastName: string }) {
   const initials = firstName?.charAt(0).toUpperCase() + lastName?.charAt(0).toUpperCase();
+
   return (
     <View style={styles.avatar}>
       <Text style={styles.avatarText}>{initials}</Text>
     </View>
   );
 }
+async function deleteUserData(uid: string) {
+  await deleteDoc(doc(db, 'users', uid));
+
+  const q = query(collection(db, 'tasks'), where('userId', '==', uid));
+  const snapshot = await getDocs(q);
+
+  await Promise.all(snapshot.docs.map((d) => deleteDoc(d.ref)));
+}
 
 export default function Profile() {
-  const [user, setUser] = useState<IUser | null>(null);
+  const userData = useSelector((state: RootState) => state.user.user);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const item = await getItem('user');
-        setUser(item);
-      } catch {}
-    };
-    fetchUser();
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      const getUser = async () => {
-        const storedUser = await getItem('user');
-        setUser(storedUser);
-      };
-
-      getUser();
-    }, []),
-  );
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const handleLogout = async () => {
     await removeItem('user');
     await signOut(auth);
+    dispatch(logoutUser());
     router.replace('/(auth)/login');
   };
 
   const handleEdit = () => {
     router.push({
-      pathname: '/edit_account',
-      params: { user: JSON.stringify(user) },
+      pathname: '/profile/edit_account',
+      params: { user: JSON.stringify(userData), title: 'Edit Name' },
     });
+  };
+
+  const deleteAccount = async (password?: string) => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+      await deleteUserData(user.uid);
+      await deleteUser(user);
+      await handleLogout();
+    } catch (error: any) {
+      if (error.code === 'auth/requires-recent-login') {
+        if (!password) {
+          Alert.alert(
+            'Re-authentication required',
+            'Please confirm your password to delete your account.',
+          );
+          return;
+        }
+
+        await reauthenticate(password);
+        await deleteUserData(user.uid);
+        await deleteUser(user);
+        await handleLogout();
+      } else {
+        ToastAlert({
+          type: 'error',
+          title: 'Try again later',
+          description: 'Something went wrong while deleting your account.',
+        });
+      }
+    }
+  };
+
+  const confirmDelete = () => {
+    setIsDeleteModalVisible(true);
   };
 
   return (
@@ -72,12 +96,16 @@ export default function Profile() {
         <TouchableOpacity onPress={handleEdit}>
           <View style={styles.avatarContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.nameText}>{user?.displayName}</Text>
-              <Text style={styles.emailText}>{user?.email}</Text>
+              <Text style={styles.nameText}>{userData?.displayName}</Text>
+              <Text style={styles.emailText}>{userData?.email}</Text>
             </View>
-            <ProfileAvatar firstName={user?.firstName || ''} lastName={user?.lastName || ''} />
+            <ProfileAvatar
+              firstName={userData.firstName as string}
+              lastName={userData.lastName as string}
+            />
           </View>
         </TouchableOpacity>
+
         <View style={styles.itemContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.regularBoldText}>Delete Account</Text>
@@ -85,21 +113,28 @@ export default function Profile() {
               Permanently remove your account and all associated data.
             </Text>
           </View>
+
           <Button
             title="Delete Account"
             type="error"
             size="medium"
-            onPress={() => null}
+            onPress={confirmDelete}
             leftIcon={<Delete color={colorScheme.light.error} />}
           />
         </View>
       </View>
+
       <Button
         title="Logout"
         size="medium"
         type="text"
         leftIcon={<Logout color={colorScheme.light.blue[300]} />}
         onPress={handleLogout}
+      />
+      <DeleteAccountModal
+        visible={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
+        onSelect={() => deleteAccount()}
       />
     </View>
   );

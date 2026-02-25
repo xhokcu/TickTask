@@ -8,9 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { setItem, getItem } from '@/helpers/asyncStorage/asyncStorage';
-import Toast from 'react-native-toast-message';
 import { useEffect } from 'react';
 import { styles } from './EditName.styles';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 export default function EditName({ user }: any) {
   const {
@@ -43,9 +43,9 @@ export default function EditName({ user }: any) {
   }, [user, reset]);
 
   const showToast = () => {
-    Toast.show({
+    ToastAlert({
       type: 'success',
-      text1: 'Your name changed successfully!',
+      title: 'Your name changed successfully!',
     });
   };
 

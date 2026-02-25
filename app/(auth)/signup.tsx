@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Login as LoginImage } from '@/svg';
 import Button from '@/components/Button/Button.index';
 import { theme } from '@/theme/Theme';
@@ -20,7 +13,7 @@ import { auth, db } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { router } from 'expo-router';
-import Toast from 'react-native-toast-message';
+import { ToastAlert } from '@/components/ToastAlert/ToastAlert.index';
 
 export default function Signup() {
   const {
@@ -37,9 +30,9 @@ export default function Signup() {
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
 
   const showToast = () => {
-    Toast.show({
+    ToastAlert({
       type: 'success',
-      text1: 'You signed up successfully!',
+      title: 'You signed up successfully!',
     });
   };
 

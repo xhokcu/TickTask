@@ -1,8 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getAnalytics } from 'firebase/analytics';
+// eslint-disable-next-line import/named
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { getFirestore } from '@react-native-firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -10,18 +11,20 @@ import { getFirestore } from 'firebase/firestore';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyDvSWnQswKQgu8ZlEGXanKPDucD-1wBnDo',
-  authDomain: 'spotal-aae7c.firebaseapp.com',
-  projectId: 'spotal-aae7c',
-  storageBucket: 'spotal-aae7c.firebasestorage.app',
-  messagingSenderId: '220383326204',
-  appId: '1:220383326204:web:fc6c94a1851b88d9fd4c79',
-  measurementId: 'G-7BYKFXF8F3',
+  apiKey: 'AIzaSyBNIIVJGGidJex_ozLp9F9g3nc34mXsPf4',
+  authDomain: 'ticktask-bbcb8.firebaseapp.com',
+  projectId: 'ticktask-bbcb8',
+  storageBucket: 'ticktask-bbcb8.firebasestorage.app',
+  messagingSenderId: '695026261699',
+  appId: '1:695026261699:web:0e6aba47b9cb455cb4cc76',
+  measurementId: 'G-7ECKX8WJ9K',
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
-export const analytics = getAnalytics(app);
-export const auth = getAuth(app);
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
+
 export const db = getFirestore(app);

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { theme } from '@/theme/Theme';
@@ -28,22 +29,19 @@ export default function Onboarding() {
             <Text style={[styles.logoText, { color: colorScheme.light.blue[200] }]}>task</Text>
           </Text>
         </View>
-        <View style={styles.bottomContainer}>
-          <Text style={styles.heading}>Let's get started!</Text>
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Login"
-              size="large"
-              type="filled"
-              onPress={() => handleOnboarded('login')}
-            />
-            <Button
-              title="Signup"
-              size="large"
-              type="outlined"
-              onPress={() => handleOnboarded('signup')}
-            />
-          </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Login"
+            size="large"
+            type="filled"
+            onPress={() => handleOnboarded('login')}
+          />
+          <Button
+            title="Signup"
+            size="large"
+            type="outlined"
+            onPress={() => handleOnboarded('signup')}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -59,9 +57,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: justifyContent.flexEnd,
     padding: spacing[24],
-    gap: spacing[120],
   },
   imageContainer: {
+    flex: 1,
     alignItems: alignItems.center,
     justifyContent: justifyContent.center,
     flexDirection: 'row',
@@ -70,15 +68,6 @@ const styles = StyleSheet.create({
   logoText: {
     fontFamily: fonts.semibold,
     fontSize: fontSizes.heading.large,
-  },
-  bottomContainer: {
-    gap: spacing[36],
-    width: '100%',
-  },
-  heading: {
-    fontFamily: fonts.medium,
-    fontSize: fontSizes.heading.medium,
-    textAlign: 'center',
   },
   buttonContainer: {
     gap: spacing[24],

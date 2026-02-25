@@ -33,6 +33,7 @@ export default function Layout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ focused }) => <Person color={focused ? activeColor : inactiveColor} />,
+          headerShown: false,
         }}
       />
     </Tabs>
