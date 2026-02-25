@@ -1,4 +1,4 @@
-### TICK TASK MOBILE APP
+# TICK TASK MOBILE APP
 
 ## Welcome to your Expo app 👋
 
