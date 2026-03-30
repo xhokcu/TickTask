@@ -1,6 +1,6 @@
 import { Modal, View, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+// import MapView, { Marker } from 'react-native-maps';
+// import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { ISelectLocationModalProps } from './SelectLocationModal.types';
 import { styles } from './SelectLocationModal.styles';
 import Button from '../Button/Button.index';
@@ -12,12 +12,12 @@ export default function SelectLocationModal({
   onClose,
   onSelect,
 }: ISelectLocationModalProps) {
-  const [selectedLocation, setSelectedLocation] = useState<ILocation | null>(null);
+  const [selectedLocation] = useState<ILocation | null>(null);
 
-  const handleSelectLocation = (e: any) => {
-    const { latitude, longitude } = e.nativeEvent.coordinate;
-    setSelectedLocation({ latitude: latitude, longitude: longitude });
-  };
+  // const handleSelectLocation = (e: any) => {
+  //   const { latitude, longitude } = e.nativeEvent.coordinate;
+  //   setSelectedLocation({ latitude: latitude, longitude: longitude });
+  // };
   const handleSubmit = () => {
     onSelect(selectedLocation);
     onClose();
@@ -32,7 +32,7 @@ export default function SelectLocationModal({
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Text style={styles.header}>Select Location</Text>
-          <GooglePlacesAutocomplete
+          {/* <GooglePlacesAutocomplete
             placeholder="Search for a location"
             fetchDetails={true}
             onPress={(data, details = null) => {
@@ -43,15 +43,11 @@ export default function SelectLocationModal({
               //   address: data.description,
               // });
             }}
-            // query={{
-            //   key:
-            //     Platform.OS === 'ios'
-            //       ? process.env.EXPO_PUBLIC_IOS_MAPS_API_KEY
-            //       : process.env.EXPO_PUBLIC_ANDROID_MAPS_API_KEY,
-            //   language: 'en',
-            // }}
             query={{
-              key: 'AIzaSyCs_PU_ywyWxFGDLAo0BfR4W7sFjjKr9UQ',
+              key:
+                Platform.OS === 'ios'
+                  ? process.env.EXPO_PUBLIC_IOS_MAPS_API_KEY
+                  : process.env.EXPO_PUBLIC_ANDROID_MAPS_API_KEY,
               language: 'en',
             }}
             styles={
@@ -72,7 +68,7 @@ export default function SelectLocationModal({
             onPress={handleSelectLocation}
           >
             {selectedLocation && <Marker coordinate={selectedLocation} />}
-          </MapView>
+          </MapView> */}
           <View style={styles.buttonContainer}>
             <Button
               size="small"
