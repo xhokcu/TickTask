@@ -99,7 +99,9 @@ function App() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-      {__DEV__ && <Stack.Screen name="storybook" />}
+      <Stack.Protected guard={__DEV__}>
+        <Stack.Screen name="storybook" />
+      </Stack.Protected>
     </Stack>
   );
 }
