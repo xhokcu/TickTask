@@ -30,11 +30,6 @@ import {
 import { useAppState } from '@/hooks/useAppState';
 import store from '@/store';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: '(tabs)',
@@ -104,9 +99,7 @@ function App() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-      <Stack.Protected guard={__DEV__}>
-        <Stack.Screen name="storybook" />
-      </Stack.Protected>
+      {__DEV__ && <Stack.Screen name="storybook" />}
     </Stack>
   );
 }
