@@ -9,6 +9,7 @@ module.exports = {
   },
   plugins: ['prettier', 'jest'],
   extends: ['expo', 'prettier', 'plugin:jest/recommended'],
+  // ignorePatterns: ['!.*'],
   rules: {
     '@typescript-eslint/ban-types': 'off',
     'prettier/prettier': 'error',

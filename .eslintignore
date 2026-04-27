@@ -1,5 +1,5 @@
 /.expo
-node_modules
+node*modules
 /scripts/reset-project.js
 expo-env.d.ts
 /.github
@@ -8,4 +8,5 @@ expo-env.d.ts
 /android
 /coverage
 /build-*.tar.gz
-/build-*.tar.gz.part
+/build-\_.tar.gz.part
+.rnstorybook

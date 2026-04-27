@@ -98,6 +98,7 @@ export default function Login() {
                   name="password"
                   isPassword
                 />
+
                 <Button
                   customButtonStyle={styles.textButton}
                   title="Forgot your password?"
@@ -108,6 +109,12 @@ export default function Login() {
                 <Text style={styles.errText}>{errMessage}</Text>
               </View>
             </View>
+            <Button
+              size="small"
+              type="text"
+              onPress={() => router.push('/storybook')}
+              title="Open StoryBook"
+            />
 
             <Button
               type={'filled'}
