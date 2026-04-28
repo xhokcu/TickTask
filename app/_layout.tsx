@@ -10,7 +10,6 @@ import { queryClient } from '@/hooks/useQuery';
 import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import toastConfig from '@/toastConfig';
-// import '@/config/firebase';
 
 import {
   Rubik_300Light,
@@ -30,6 +29,11 @@ import {
 } from '@expo-google-fonts/rubik';
 import { useAppState } from '@/hooks/useAppState';
 import store from '@/store';
+
+export {
+  // Catch any errors thrown by the Layout component.
+  ErrorBoundary,
+} from 'expo-router';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
