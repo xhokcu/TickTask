@@ -10,6 +10,7 @@ import { queryClient } from '@/hooks/useQuery';
 import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import toastConfig from '@/toastConfig';
+// import '@/config/firebase';
 
 import {
   Rubik_300Light,
@@ -99,9 +100,9 @@ function App() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       {/* <Stack.Screen name="modal" options={{ presentation: 'modal' }} /> */}
-      <Stack.Protected guard={__DEV__}>
+      {/* <Stack.Protected guard={__DEV__}>
         <Stack.Screen name="storybook" />
-      </Stack.Protected>
+      </Stack.Protected> */}
     </Stack>
   );
 }
