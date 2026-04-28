@@ -11,6 +11,9 @@ module.exports = {
     runtimeVersion: {
       policy: 'sdkVersion',
     },
+    updates: {
+      url: 'https://u.expo.dev/6e45986b-68f2-48d4-9825-700a0ca0429d',
+    },
     splash: {
       image: './assets/images/splash-icon.png',
       resizeMode: 'contain',
